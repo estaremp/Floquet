@@ -91,6 +91,7 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+.idea/
 env/
 venv/
 ENV/
@@ -114,3 +115,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#xml files
+colors.scheme.xml
+debugger.xml
+editor.codeinsight.xml
+filetypes.xml
+github.xml
+project.default.xml
+vcs.xml
+vim_settings.xml
