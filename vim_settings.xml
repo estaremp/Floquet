@@ -1,0 +1,73 @@
+<application>
+  <component name="VimSettings">
+    <state version="4" enabled="true" />
+    <globalmarks />
+    <filemarks>
+      <file name="/Dummy.txt" timestamp="1548726391069">
+        <mark key="[" line="0" column="0" />
+      </file>
+      <file name="$USER_HOME$/Desktop/Crypto/Cryptosystems/T2018_Practica2_Skeleton.py" timestamp="1542853415875">
+        <mark key="[" line="36" column="4" />
+        <mark key="]" line="36" column="3" />
+        <mark key="." line="36" column="3" />
+        <mark key="^" line="36" column="3" />
+      </file>
+      <file name="/Python Console" timestamp="1548726695537">
+        <mark key="[" line="0" column="0" />
+      </file>
+      <file name="$USER_HOME$/PycharmProjects/GraphFlow/main.py" timestamp="1542864488869">
+        <mark key="'" line="4" column="0" />
+        <mark key="[" line="0" column="1" />
+        <mark key="]" line="2" column="0" />
+        <mark key="." line="2" column="0" />
+      </file>
+      <file name="$USER_HOME$/PycharmProjects/Floquet/main.py" timestamp="1548726300235">
+        <mark key="[" line="0" column="0" />
+      </file>
+      <file name="$USER_HOME$/Desktop/Crypto/Prac/T2018_Practica3_Skeleton.py" timestamp="1545473571734">
+        <mark key="[" line="57" column="5" />
+        <mark key="]" line="57" column="5" />
+        <mark key="." line="57" column="5" />
+        <mark key="^" line="57" column="5" />
+      </file>
+    </filemarks>
+    <jumps>
+      <jump line="3" column="0" filename="$USER_HOME$/PycharmProjects/GraphFlow/main.py" />
+    </jumps>
+    <registers>
+      <register name="1" type="4">
+        <text>for i in range(20):
+    print(&quot;Hello World&quot;)</text>
+      </register>
+      <register name="&quot;" type="4">
+        <text encoding="base64">Z2V0cmFuZGJpdHMoaykgLT4gcA==</text>
+      </register>
+      <register name="2" type="2">
+        <text encoding="base64">ZGVmIEhhbWlsdG9uaWRkYW5fYnVpbGRpbmcoKToK</text>
+      </register>
+      <register name="3" type="2">
+        <text encoding="base64">Cg==</text>
+      </register>
+      <register name="4" type="2">
+        <text encoding="base64">Cg==</text>
+      </register>
+      <register name="-" type="4">
+        <text encoding="base64">Z2V0cmFuZGJpdHMoaykgLT4gcA==</text>
+      </register>
+    </registers>
+    <search>
+      <last-dir>0</last-dir>
+      <show-last>false</show-last>
+    </search>
+    <history>
+      <history-search />
+      <history-cmd />
+      <history-expr />
+      <history-input />
+    </history>
+    <shortcut-conflicts />
+    <editor>
+      <key-repeat enabled="true" />
+    </editor>
+  </component>
+</application>
