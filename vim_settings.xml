@@ -3,7 +3,7 @@
     <state version="4" enabled="true" />
     <globalmarks />
     <filemarks>
-      <file name="/Dummy.txt" timestamp="1548726391069">
+      <file name="/Dummy.txt" timestamp="1548728840694">
         <mark key="[" line="0" column="0" />
       </file>
       <file name="$USER_HOME$/Desktop/Crypto/Cryptosystems/T2018_Practica2_Skeleton.py" timestamp="1542853415875">
@@ -21,8 +21,10 @@
         <mark key="]" line="2" column="0" />
         <mark key="." line="2" column="0" />
       </file>
-      <file name="$USER_HOME$/PycharmProjects/Floquet/main.py" timestamp="1548726300235">
+      <file name="$USER_HOME$/PycharmProjects/Floquet/main.py" timestamp="1548729155951">
         <mark key="[" line="0" column="0" />
+        <mark key="]" line="0" column="0" />
+        <mark key="." line="0" column="0" />
       </file>
       <file name="$USER_HOME$/Desktop/Crypto/Prac/T2018_Practica3_Skeleton.py" timestamp="1545473571734">
         <mark key="[" line="57" column="5" />
@@ -35,24 +37,27 @@
       <jump line="3" column="0" filename="$USER_HOME$/PycharmProjects/GraphFlow/main.py" />
     </jumps>
     <registers>
-      <register name="1" type="4">
+      <register name="1" type="2">
+        <text encoding="base64">aW1wb2dldHJhbmRiaXRzKGspIC0+IG1wb3J0ICpwCg==</text>
+      </register>
+      <register name="&quot;" type="2">
+        <text encoding="base64">aW1wb2dldHJhbmRiaXRzKGspIC0+IG1wb3J0ICpwCg==</text>
+      </register>
+      <register name="2" type="4">
         <text>for i in range(20):
     print(&quot;Hello World&quot;)</text>
       </register>
-      <register name="&quot;" type="4">
-        <text encoding="base64">Z2V0cmFuZGJpdHMoaykgLT4gcA==</text>
-      </register>
-      <register name="2" type="2">
-        <text encoding="base64">ZGVmIEhhbWlsdG9uaWRkYW5fYnVpbGRpbmcoKToK</text>
-      </register>
       <register name="3" type="2">
-        <text encoding="base64">Cg==</text>
+        <text encoding="base64">ZGVmIEhhbWlsdG9uaWRkYW5fYnVpbGRpbmcoKToK</text>
       </register>
       <register name="4" type="2">
         <text encoding="base64">Cg==</text>
       </register>
+      <register name="5" type="2">
+        <text encoding="base64">Cg==</text>
+      </register>
       <register name="-" type="4">
-        <text encoding="base64">Z2V0cmFuZGJpdHMoaykgLT4gcA==</text>
+        <text>rt qutip</text>
       </register>
     </registers>
     <search>
