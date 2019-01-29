@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6dacc04e-b87b-4cc6-855c-6c0ac19d70ce" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,18 +12,45 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Floquet$main.coverage" NAME="main Coverage Results" MODIFIED="1548741034268" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Floquet$main.coverage" NAME="main Coverage Results" MODIFIED="1548757475276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="623">
-              <caret line="81" selection-start-line="81" selection-end-line="81" />
+            <state relative-caret-position="488">
+              <caret line="132" column="46" selection-start-line="132" selection-start-column="46" selection-end-line="132" selection-end-column="46" />
               <folding>
                 <element signature="e#14#33#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/lib/python3.6/site-packages/scipy/integrate/_ode.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="9353">
+              <caret line="1361" column="31" selection-start-line="1361" selection-start-column="31" selection-end-line="1361" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/lib/python3.6/site-packages/qutip/solver.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="670">
+              <caret line="884" selection-start-line="884" selection-end-line="884" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/lib/python3.6/site-packages/qutip/mesolve.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="224" selection-start-line="224" selection-end-line="224" />
             </state>
           </provider>
         </entry>
@@ -38,6 +64,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>runner</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -50,9 +81,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="70" />
+    <option name="x" value="14" />
     <option name="y" value="23" />
-    <option name="width" value="1449" />
+    <option name="width" value="2277" />
     <option name="height" value="1268" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -61,8 +92,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -144,7 +175,8 @@
       <workItem from="1548726686231" duration="554000" />
       <workItem from="1548727478491" duration="1094000" />
       <workItem from="1548730158499" duration="228000" />
-      <workItem from="1548730462726" duration="9011000" />
+      <workItem from="1548730462726" duration="9597000" />
+      <workItem from="1548742412879" duration="11615000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1548728593330</created>
@@ -174,11 +206,18 @@
       <option name="project" value="LOCAL" />
       <updated>1548735463622</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Time-dependence introduced">
+      <created>1548741168307</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1548741168307</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11439000" />
+    <option name="totallyTimeSpent" value="23640000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -190,15 +229,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="70" y="23" width="1449" height="1268" extended-state="0" />
-    <editor active="true" />
+    <frame x="14" y="23" width="2277" height="1268" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25373134" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16196868" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32993197" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32993197" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -209,12 +247,12 @@
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.27465987" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32908162" />
-      <window_info anchor="right" x="0" y="0" width="312" height="1068" id="Documentation" side_tool="true" visible="true" weight="0.19331911" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" />
+      <window_info active="true" anchor="right" id="SciView" order="3" sideWeight="0.49873096" visible="true" weight="0.4281879" />
       <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" x="0" y="0" width="312" height="1068" id="Documentation" order="5" sideWeight="0.50126904" side_tool="true" weight="0.49172258" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -233,7 +271,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Init" />
     <MESSAGE value="Hamiltonian generation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hamiltonian generation" />
+    <MESSAGE value="Time-dependence introduced" />
+    <option name="LAST_COMMIT_MESSAGE" value="Time-dependence introduced" />
   </component>
   <component name="editorHistoryManager">
     <entry file="uml://JavaScript-modules-diagram//Users/estaremp/PycharmProjects/Floquet">
@@ -254,9 +293,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/github.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/github.xml" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="674">
@@ -267,10 +304,31 @@
     <entry file="file://$PROJECT_DIR$/venv/pyvenv.cfg">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file:///usr/local/lib/python3.6/site-packages/qutip/mesolve.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="224" selection-start-line="224" selection-end-line="224" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.6/site-packages/qutip/solver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="670">
+          <caret line="884" selection-start-line="884" selection-end-line="884" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.6/site-packages/scipy/integrate/_ode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9353">
+          <caret line="1361" column="31" selection-start-line="1361" selection-start-column="31" selection-end-line="1361" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
+        <state relative-caret-position="488">
+          <caret line="132" column="46" selection-start-line="132" selection-start-column="46" selection-end-line="132" selection-end-column="46" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
           </folding>
