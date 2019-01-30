@@ -5,19 +5,20 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
+#---------------------FUNCTIONS--------------------------#
 
-def evaluate_H(t,args):
-    H1 = args[0]
-    H2 = args[1]
-    H3 = args[2]
-    T = args[3]
-    range = int(t/T)
-
-    H = bool(((range-1) * T )<=t<=(range + T/3)) * H1 \
-        + bool((range + T/3)<t<=(range + (2*T)/3)) * H2 \
-        + bool((range + (2*T)/3)<t<=(range + T)) * H3
-
-    return H
+# def evaluate_H(t,args):
+#     H1 = args[0]
+#     H2 = args[1]
+#     H3 = args[2]
+#     T = args[3]
+#     range = int(t/T)
+#
+#     H = bool(((range-1) * T )<=t<=(range + T/3)) * H1 \
+#         + bool((range + T/3)<t<=(range + (2*T)/3)) * H2 \
+#         + bool((range + (2*T)/3)<t<=(range + T)) * H3
+#
+#     return H
 
 def coef_H1(t,args):
     T = 1
@@ -37,7 +38,7 @@ def coef_H3(t,args):
 pi = math.pi
 
 #Parameters
-N = 10
+N = 4
 T = 1.0
 g = (3.0 * pi) / (2.0)
 eps = 0.03
@@ -45,7 +46,9 @@ alpha = 1.5
 J0 = 0.108
 W = (3.0 * pi)
 
+#------------------------HAMILTONIAN------------------------#
 
+#Tensor pauli matrices
 si = qeye(2)
 sm = destroy(2)
 sx = sigmax()
@@ -78,6 +81,7 @@ for i in range(N):
     sz_list.append(tensor(op))
 
 
+#Initi hami components
 H1 = 0
 H2 = 0
 H3 = 0
@@ -99,6 +103,8 @@ for i in range(N):
 Hargs = (H1,H2,H3,T)
 H = [[H1,coef_H1],[H2,coef_H2],[H3,coef_H3]]
 
+#------------------------DYNAMICS------------------------#
+
 #Define initial state Psi0
 psi_list = []
 for i in range(N):
@@ -107,7 +113,7 @@ for i in range(N):
 Psi0 = tensor(psi_list)
 
 #Time for the dynamics
-t = np.linspace(0.0,100.0,2000.0)
+t = np.linspace(0.0,0.1)
 
 #Define magnetization tensor
 sx_exp_list = []
@@ -130,9 +136,11 @@ for i in range(N):
     sm_exp_list.append(tensor(op))
 
 #Solve master equation
-result = mesolve(H, Psi0, t, [], sm_exp_list[0])
+result = mesolve(H, Psi0, t, [], sx_exp_list[0])
 
-#Plot
+#---------------------PLOT---------------------------#
+
+#Plot magnetization
 fig, ax = plt.subplots(figsize=(10,6))
 
 ax.plot(t, np.real(result.expect[0]))
@@ -142,8 +150,26 @@ ax.set_ylabel(r'\langle\sigma_x\rangle')
 ax.set_title(r'Full dynamics of the time crystal');
 plt.show()
 
+#---------------------ENTANGLEMENT---------------------------#
 
+#Solve state
+result = mesolve(H, Psi0, t, [], [])
 
+red_rho = 0
+entanglement = []
+k=0
 
+#print(result.states)
+
+#Calculate entanglement graph
+for s in result.states:
+    ent = np.zeros(shape=(N,N))
+    for i in range(N):
+        red_rho = 0
+        for j in range(i+1,N):
+            red_rho = s.ptrace([i,j])
+            print(red_rho)
+            ent[i,j] = concurrence(red_rho)
+    entanglement.append(ent)
 
 
