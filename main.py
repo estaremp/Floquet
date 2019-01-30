@@ -1,9 +1,14 @@
 #import qutip
 from qutip import *
+from scipy import *
 import math
-
+import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
+
+#import our subroutines
+import entanglement
+import dynamics
 
 #---------------------FUNCTIONS--------------------------#
 
@@ -35,9 +40,12 @@ def coef_H3(t,args):
     range = int(t/T)
     return bool((range + (2*T)/3)<t<=(range + T))
 
-pi = math.pi
+pi = np.pi
 
-#Parameters
+#----------------------------------------------------------#
+#------------------------PARAMETERS------------------------#
+#----------------------------------------------------------#
+
 N = 4
 T = 1.0
 g = (3.0 * pi) / (2.0)
@@ -46,7 +54,12 @@ alpha = 1.5
 J0 = 0.108
 W = (3.0 * pi)
 
+#Time for the dynamics
+times = np.linspace(0.0,10.0,10.0)
+
+#-----------------------------------------------------------#
 #------------------------HAMILTONIAN------------------------#
+#-----------------------------------------------------------#
 
 #Tensor pauli matrices
 si = qeye(2)
@@ -103,17 +116,6 @@ for i in range(N):
 Hargs = (H1,H2,H3,T)
 H = [[H1,coef_H1],[H2,coef_H2],[H3,coef_H3]]
 
-#------------------------DYNAMICS------------------------#
-
-#Define initial state Psi0
-psi_list = []
-for i in range(N):
-    psi_list.append((1/np.sqrt(2)) * (basis(2,0)+basis(2,1)))
-
-Psi0 = tensor(psi_list)
-
-#Time for the dynamics
-t = np.linspace(0.0,0.1)
 
 #Define magnetization tensor
 sx_exp_list = []
@@ -135,41 +137,40 @@ for i in range(N):
     op[i] = sm.dag() * sm
     sm_exp_list.append(tensor(op))
 
-#Solve master equation
-result = mesolve(H, Psi0, t, [], sx_exp_list[0])
+#Define initial state Psi0
+psi_list = []
+for i in range(N):
+    psi_list.append((1/np.sqrt(2)) * (basis(2,0)+basis(2,1)))
 
-#---------------------PLOT---------------------------#
+Psi0 = tensor(psi_list)
 
-#Plot magnetization
+#-----------------------------------------------------------#
+#------------------------FLOQUET----------------------------#
+#-----------------------------------------------------------#
+
+#find the floquet eigenstates and quasienergies
+floquet_modes,quasi_energies = floquet_modes(H,T,Hargs)
+
+#decompose initial state into them
+floquet_coeff = floquet_state_decomposition(floquet_modes,quasi_energies,Psi0)
+
+p_ex = zeros(len(times))
+for n, t in enumerate(times):
+    psi_t = floquet_wavefunction_t(floquet_modes, quasi_energies, floquet_coeff, t, H, T)
+    p_ex[n]=fidelity(Psi0, psi_t)
+    print(fidelity(Psi0, psi_t))
+
 fig, ax = plt.subplots(figsize=(10,6))
 
-ax.plot(t, np.real(result.expect[0]))
+ax.plot(times, np.real(p_ex))
 
 ax.set_xlabel(r'Time')
-ax.set_ylabel(r'\langle\sigma_x\rangle')
-ax.set_title(r'Full dynamics of the time crystal');
+ax.set_ylabel(r'Fidelity against Psi0')
+ax.set_title(r'Stroboscopic dynamics of the time crystal');
 plt.show()
 
-#---------------------ENTANGLEMENT---------------------------#
+#Plot dynamics
+#dynamics.full_dynamics(N,H,Psi0,sx_exp_list[0],times)
 
-#Solve state
-result = mesolve(H, Psi0, t, [], [])
-
-red_rho = 0
-entanglement = []
-k=0
-
-#print(result.states)
-
-#Calculate entanglement graph
-for s in result.states:
-    ent = np.zeros(shape=(N,N))
-    for i in range(N):
-        red_rho = 0
-        for j in range(i+1,N):
-            red_rho = s.ptrace([i,j])
-            print(red_rho)
-            ent[i,j] = concurrence(red_rho)
-    entanglement.append(ent)
-
-
+#Plot entanglement graph
+#G = entanglement.entangled_graph(N,H,Psi0,10.0,10.0)
