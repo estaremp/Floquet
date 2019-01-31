@@ -4,12 +4,12 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 
-def entangled_matrices(N,H,Psi0,t):
+def entangled_matrices(N,H,Psi0,t,args):
 
     #---------------------ENTANGLEMENT---------------------------#
 
     #Solve state
-    result = mesolve(H, Psi0, t, [], [])
+    result = mesolve(H, Psi0, t, [], [],args)
 
     red_rho = 0
     entanglement = []

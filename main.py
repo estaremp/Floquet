@@ -21,20 +21,7 @@ def chop(A, eps = 0.1):
     B[np.abs(A) < eps] = 0
     return B
 
-def evaluate_H(t,args):
-    H1 = args[0]
-    H2 = args[1]
-    H3 = args[2]
-    T = args[3]
-    range = int(t/T)
-
-    H = bool(((range-1) * T )<=t<=(range + T/3)) * H1 \
-        + bool((range + T/3)<t<=(range + (2*T)/3)) * H2 \
-        + bool((range + (2*T)/3)<t<=(range + T)) * H3
-
-    return H
-
-#Hamiltonian terms time-dependence
+#time dependence for H1
 def coef_H1(t,args):
     t0 = args['t0']
     T = args['T']
@@ -42,6 +29,7 @@ def coef_H1(t,args):
     range = int(t/T)
     return bool(((range-1) * T )<=t<=(range + T/3))
 
+#time dependence for H2
 def coef_H2(t,args):
     t0 = args['t0']
     T = args['T']
@@ -49,6 +37,7 @@ def coef_H2(t,args):
     range = int(t/T)
     return bool((range + T/3)<t<=(range + (2*T)/3))
 
+#time dependence for H3
 def coef_H3(t,args):
     t0 = args['t0']
     T = args['T']
@@ -62,18 +51,24 @@ pi = np.pi
 #------------------------PARAMETERS------------------------#
 #----------------------------------------------------------#
 
-N = 10
-T = 1.0
-g = (3.0 * pi) / (2.0)
-eps = 0.0
-alpha = 1.5
-J0 = 0.108
-W = (3.0 * pi)
-t0 = 0.0
-numframes = 2
+#Hamiltonian parametrization
+N = 4                      #size
+T = 1.0                    #Period
+g = (3.0 * pi) / (2.0)     #g H1
+eps = 0.0                  #error in H1
+alpha = 1.5                #distribution coupling
+J0 = 0.108                 #maximum coupling
+W = (3.0 * pi)             #strength of random disorder
+
+#Dynamical conditions
+t0 = 0.0                   #initial time
+tF = 10.0                  #final time
+tStep = 100                #time step
+nT = 10                    #num of stroboscopic steps
+numframes = 2              #num frames for animations
 
 #Time for the dynamics
-times = np.linspace(0.0,T,10.0)
+t_list = np.linspace(0.0,tF,tStep)
 t0_list = np.linspace(0.0,T,numframes)
 
 #Boolean options (more time)
@@ -189,26 +184,16 @@ floquet_coeff = floquet_state_decomposition(floquet_states,quasi_energies,Psi0)
 #NOTE: WE CONSIDER T0 = 0.0 HERE
 
 #Time evolve stroboscopically and get fidelity against initial state
-#or any other expectation value
-fid = zeros(len(times))
-for n, t in enumerate(times):
-     psi_t = floquet_wavefunction_t(floquet_states, quasi_energies, floquet_coeff, t, H, T, args)
-     fid[n] = fidelity(Psi0, psi_t)
+dynamics.stroboscopic_dynamics(floquet_states,quasi_energies,floquet_coeff,H,T,nT,Psi0,args)
 
-fig, ax = plt.subplots(figsize=(10,6))
+#Plot full dynamics for t0 = 0
+dynamics.full_dynamics(H,Psi0,sx_exp_list[0],t_list,args)
 
-ax.plot(times, fid)
+#Plot full entanglement dynamics
+entanglement.entangled_matrices(N,H,Psi0,t_list,args)
 
-ax.set_xlabel(r'Time')
-ax.set_ylabel(r'Fidelity against Psi0')
-ax.set_title(r'Stroboscopic dynamics of the time crystal');
-plt.show()
-
-#Plot full dynamics
-#dynamics.full_dynamics(N,H,Psi0,sx_exp_list[0],times)
-
-#Plot full entanglement graph
-#G = entanglement.entangled_graph(N,H,Psi0,10.0,10.0)
+#TODO - obtain stroboscopic entangled graph evolution
+#TODO - obtain full entangled graph evolution
 
 #-----------------------------------------------------------#
 #------------------EVOLUTION WITH T0------------------------#
@@ -255,41 +240,41 @@ else:
 #------------------------NETWORK----------------------------#
 #-----------------------------------------------------------#
 
-# fig, ax = plt.subplots(figsize=(10,10))
-# graphs = []
-# for k,t0 in enumerate(t0_list):
-#
-#     #Create node label and their weight
-#     node_list = []
-#     for i in range(2**N):
-#         node_list.append([i,eff_hami[k][i,i]])
-#
-#     #Create edge list and their weight
-#     edges_list = []
-#     for i in range(2**N):
-#         for j in range(i+1,2**N):
-#             edges_list.append([(i,j), eff_hami[k][i,j]])
-#
-#     #Create graph
-#     G = nx.Graph()
-#
-#     G.add_edges_from([edges_list[i][0] for i in range(len(edges_list))])
-#
-#     #Specify weight for nodes and edges
-#     vals = [round(np.abs(node_list[n][1]),1) for n in G.nodes()]
-#     weights = [round(np.abs(edges_list[n][1]),3) for n in range(len(G.edges()))]
-#
-#     #Drwa graph
-#     nodes = nx.draw_networkx_nodes(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
-#     edges = nx.draw_networkx_edges(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
-#
-#     #Append group of graphs
-#     graphs.append([nodes,edges,])
-#
-# #Animate graph evolution
-# ani = animation.ArtistAnimation(fig, graphs, interval=1, blit=True, repeat_delay=1000)
-# #animation has to be run from the .html file
-# ani.save('dynamic_graph.html')
+fig, ax = plt.subplots(figsize=(10,10))
+graphs = []
+for k,t0 in enumerate(t0_list):
+
+    #Create node label and their weight
+    node_list = []
+    for i in range(2**N):
+        node_list.append([i,eff_hami[k][i,i]])
+
+    #Create edge list and their weight
+    edges_list = []
+    for i in range(2**N):
+        for j in range(i+1,2**N):
+            edges_list.append([(i,j), eff_hami[k][i,j]])
+
+    #Create graph
+    G = nx.Graph()
+
+    G.add_edges_from([edges_list[i][0] for i in range(len(edges_list))])
+
+    #Specify weight for nodes and edges
+    vals = [round(np.abs(node_list[n][1]),1) for n in G.nodes()]
+    weights = [round(np.abs(edges_list[n][1]),3) for n in range(len(G.edges()))]
+
+    #Drwa graph
+    nodes = nx.draw_networkx_nodes(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
+    edges = nx.draw_networkx_edges(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
+
+    #Append group of graphs
+    graphs.append([nodes,edges,])
+
+#Animate graph evolution
+ani = animation.ArtistAnimation(fig, graphs, interval=1, blit=True, repeat_delay=1000)
+#animation has to be run from the .html file
+ani.save('dynamic_graph.html')
 
 #-----------------------------------------------------------#
 #---------------ENTANGLEMENT EVOLUTION----------------------#
@@ -306,7 +291,7 @@ if animate:
         args = {'t0': t0, 'T': T}
         H = [[H1,coef_H1],[H2,coef_H2],[H3,coef_H3]]
 
-        #Find the floquet eigenstates and quasienergies
+        #Find the floquet eigenstates and quasienergies at each t0
         floquet_states,quasi_energies = floquet_modes(H,T,args,True,None)
 
         eff = floquet_states[N]
