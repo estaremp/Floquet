@@ -4,7 +4,7 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 
-def entangled_graph(N,H,Psi0,t):
+def entangled_matrices(N,H,Psi0,t):
 
     #---------------------ENTANGLEMENT---------------------------#
 
@@ -24,23 +24,4 @@ def entangled_graph(N,H,Psi0,t):
                 ent[i,j] = concurrence(red_rho)
         entanglement.append(ent)
 
-    #---------------------PLOT ENTANGLEMENT GRAPH---------------------------#
-
-    G = nx.from_numpy_matrix(entanglement[5],parallel_edges=False)
-    pos=nx.circular_layout(G)
-
-    nx.draw_networkx_nodes(G,pos,node_color='green',node_size=500)
-
-    all_weights = []
-    for (node1, node2, data) in G.edges(data=True):
-        all_weights.append(data['weight'])
-
-    unique_weights = list(set(all_weights))
-
-    for weight in unique_weights:
-        weighted_edges = [(node1,node2) for (node1,node2,edge_attr) in G.edges(data=True) if edge_attr['weight']==weight]
-        width = weight
-        nx.draw_networkx_edges(G,pos,edgelist=weighted_edges,width=width)
-
-    plt.show()
-    return G
+    return entanglement
