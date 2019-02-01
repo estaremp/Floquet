@@ -11,8 +11,8 @@ import matplotlib.animation as animation
 #import our subroutines
 import entanglement
 import dynamics
+import graphs
 
-from numpy import linalg as LA
 
 #---------------------FUNCTIONS--------------------------#
 
@@ -65,14 +65,18 @@ t0 = 0.0                   #initial time
 tF = 10.0                  #final time
 tStep = 100                #time step
 nT = 10                    #num of stroboscopic steps
-numframes = 2              #num frames for animations
+numframes = 10             #num frames for animations
 
 #Time for the dynamics
 t_list = np.linspace(0.0,tF,tStep)
 t0_list = np.linspace(0.0,T,numframes)
 
 #Boolean options (more time)
-animate = False
+evolve_t0 = False
+all_eigenstates = True
+
+#Entanglement calculation
+x = N                        #entanglement graph of the x eigenstate
 
 #-----------------------------------------------------------#
 #------------------------HAMILTONIAN------------------------#
@@ -196,94 +200,75 @@ entanglement.entangled_matrices(N,H,Psi0,t_list,args)
 #TODO - obtain full entangled graph evolution
 
 #-----------------------------------------------------------#
-#------------------EVOLUTION WITH T0------------------------#
+#------------------EVOLUTION Heff WITH T0-------------------#
 #-----------------------------------------------------------#
 
-fig, ax = plt.subplots(figsize=(10,6))
+fig1, ax1 = plt.subplots(figsize=(10,6))
+fig2, ax2 = plt.subplots(figsize=(10,10))
 
-eff_hami = []
-maps = []
-for k,t0 in enumerate(t0_list):
+if evolve_t0:
+    eff_hami = []
+    maps = []
+    graph = []
+    for k,t0 in enumerate(t0_list):
 
-    #Put Hamiltonians together
-    args = {'t0': t0, 'T': T}
-    H = [[H1,coef_H1],[H2,coef_H2],[H3,coef_H3]]
+        #Put Hamiltonians together
+        args = {'t0': t0, 'T': T}
+        H = [[H1,coef_H1],[H2,coef_H2],[H3,coef_H3]]
 
-    #Obtain Floquet operator
-    Floquet_op = propagator(H, T, [], args)
+        #Obtain Floquet operator
+        Floquet_op = propagator(H, T, [], args)
+
+        #Effective hamiltonian
+        eff_h = ((-1/(1.j*T))*logm(Floquet_op.full()))
+
+        #Obtain list of effective Hamiltonians
+        eff_hami.append(eff_h)
+
+        #Animate matrixplot and graph of effective hamiltonian with t0
+        map = ax1.imshow(np.real(chop(eff_hami[k])),vmin=-1., vmax=1., cmap='RdBu_r', interpolation='nearest', animated=True)
+        maps.append([map])
+
+        #Generate graphs
+        G, nodes, edges = graphs.generate_weighted_graph(np.real(chop(eff_hami[k])))
+
+        #Append group of graphs
+        graph.append([nodes,edges,])
+
+    #Animate effective hamiltonian evolution
+    fig1.colorbar(map,ax=ax1)
+    ani_heff = animation.ArtistAnimation(fig1, maps, interval=1, blit=True, repeat_delay=1000)
+    #Animation has to be run from the .html file
+    ani_heff.save('dynamic_map.html')
+
+    #Animate graph evolution
+    ani_graph = animation.ArtistAnimation(fig2, graph, interval=1, blit=True, repeat_delay=1000)
+    #animation has to be run from the .html file
+    ani_graph.save('dynamic_graph.html')
+
+
+else:
+    #Only show effective hamiltonian from [0,T]
 
     #Effective hamiltonian
     eff_h = ((-1/(1.j*T))*logm(Floquet_op.full()))
 
-    #Obtain list of effective Hamiltonians
-    eff_hami.append(eff_h)
+    #Graph
+    G, nodes, edges = graphs.generate_weighted_graph(np.real(chop(eff_h)))
+    fig2.savefig('effective_graphT0.png')
 
-    #Animate matrixplot and graph of effective hamiltonian with t0
-    if animate:
-        map = ax.imshow(np.real(chop(eff_hami[k])),vmin=-1., vmax=1., cmap='RdBu_r', interpolation='nearest', animated=True)
-        plt.colorbar()
-        maps.append([map])
-
-
-if animate:
-    ani = animation.ArtistAnimation(fig, maps, interval=1, blit=True, repeat_delay=1000)
-    #Animation has to be run from the .html file
-    ani.save('dynamic_map.html')
-
-else:
-    #Only show effective hamiltonian from [0,T]
-    map = ax.imshow(np.real(chop(eff_hami[0])),vmin=-1., vmax=1., cmap='RdBu_r', interpolation='nearest', animated=True)
-    fig.colorbar(map,ax=ax)
-    plt.show()
-
-#-----------------------------------------------------------#
-#------------------------NETWORK----------------------------#
-#-----------------------------------------------------------#
-
-fig, ax = plt.subplots(figsize=(10,10))
-graphs = []
-for k,t0 in enumerate(t0_list):
-
-    #Create node label and their weight
-    node_list = []
-    for i in range(2**N):
-        node_list.append([i,eff_hami[k][i,i]])
-
-    #Create edge list and their weight
-    edges_list = []
-    for i in range(2**N):
-        for j in range(i+1,2**N):
-            edges_list.append([(i,j), eff_hami[k][i,j]])
-
-    #Create graph
-    G = nx.Graph()
-
-    G.add_edges_from([edges_list[i][0] for i in range(len(edges_list))])
-
-    #Specify weight for nodes and edges
-    vals = [round(np.abs(node_list[n][1]),1) for n in G.nodes()]
-    weights = [round(np.abs(edges_list[n][1]),3) for n in range(len(G.edges()))]
-
-    #Drwa graph
-    nodes = nx.draw_networkx_nodes(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
-    edges = nx.draw_networkx_edges(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
-
-    #Append group of graphs
-    graphs.append([nodes,edges,])
-
-#Animate graph evolution
-ani = animation.ArtistAnimation(fig, graphs, interval=1, blit=True, repeat_delay=1000)
-#animation has to be run from the .html file
-ani.save('dynamic_graph.html')
+    map = ax1.imshow(np.real(chop(eff_h)),vmin=-1., vmax=1., cmap='RdBu_r', interpolation='nearest', animated=True)
+    fig1.colorbar(map,ax=ax1)
+    fig1.savefig('effective_hami_mapT0.png')
 
 #-----------------------------------------------------------#
 #---------------ENTANGLEMENT EVOLUTION----------------------#
 #-----------------------------------------------------------#
 
+#entanglement graph for x Floquet eigenstate
 fig, ax = plt.subplots(figsize=(10,10))
 
-if animate:
-
+if evolve_t0:
     ent_graph = []
     for k,t0 in enumerate(t0_list):
 
@@ -294,7 +279,7 @@ if animate:
         #Find the floquet eigenstates and quasienergies at each t0
         floquet_states,quasi_energies = floquet_modes(H,T,args,True,None)
 
-        eff = floquet_states[N]
+        eff = floquet_states[x]
         ent = np.zeros(shape=(N,N))
         for i in range(N):
             red_rho = 0
@@ -302,29 +287,8 @@ if animate:
                 red_rho = eff.ptrace([i,j])
                 ent[i,j] = concurrence(red_rho)
 
-        #Create node label and their weight
-        node_list = []
-        for i in range(N):
-            node_list.append([i,ent[i,i]])
-
-        #Create edge list and their weight
-        edges_list = []
-        for i in range(N):
-            for j in range(i+1,N):
-                edges_list.append([(i,j), ent[i,j]])
-
-        #Create graph
-        G = nx.Graph()
-
-        G.add_edges_from([edges_list[i][0] for i in range(len(edges_list))])
-
-        #Specify weight for nodes and edges
-        vals = [round(np.abs(node_list[n][1]),1) for n in G.nodes()]
-        weights = [round(np.abs(edges_list[n][1]),3) for n in range(len(G.edges()))]
-
-        #Drwa graph
-        nodes = nx.draw_networkx_nodes(G, vmin=-1., vmax=1., cmap=plt.get_cmap('YlOrRd'), node_color=vals, width = weights,pos=nx.circular_layout(G))
-        edges = nx.draw_networkx_edges(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
+        #Generate graphs
+        G, nodes, edges = graphs.generate_weighted_graph(ent)
 
         #Append group of graphs
         ent_graph.append([nodes,edges,])
@@ -332,18 +296,10 @@ if animate:
     #Animate graph evolution
     ani = animation.ArtistAnimation(fig, ent_graph, interval=1, blit=True, repeat_delay=1000)
     #animation has to be run from the .html file
-    ani.save('entangled_graph.html')
-
-for k in range(2**N):
-
-    #Put Hamiltonians together
-    args = {'t0': t0, 'T': T}
-    H = [[H1,coef_H1],[H2,coef_H2],[H3,coef_H3]]
-
-    #Find the floquet eigenstates and quasienergies
-    floquet_states,quasi_energies = floquet_modes(H,T,args,True,None)
-
-    eff = floquet_states[k]
+    ani.save('entangled_graph_vectX.html')
+else:
+    #Only show effective hamiltonian from [0,T]
+    eff = floquet_states[0]
     ent = np.zeros(shape=(N,N))
     for i in range(N):
         red_rho = 0
@@ -351,27 +307,30 @@ for k in range(2**N):
             red_rho = eff.ptrace([i,j])
             ent[i,j] = concurrence(red_rho)
 
-    #Create node label and their weight
-    node_list = []
-    for i in range(N):
-        node_list.append([i,ent[i,i]])
+    #Generate graphs
+    G, nodes, edges = graphs.generate_weighted_graph(ent)
+    plt.savefig('entangled_graph_vectX-T0.png')
 
-    #Create edge list and their weight
-    edges_list = []
-    for i in range(N):
-        for j in range(i+1,N):
-            edges_list.append([(i,j), ent[i,j]])
+#get entanglement graph for all eigenstates t0
+if all_eigenstates:
+    for k in range(2**N):
 
-    #Create graph
-    G = nx.Graph()
+        #Put Hamiltonians together
+        args = {'t0': t0, 'T': T}
+        H = [[H1,coef_H1],[H2,coef_H2],[H3,coef_H3]]
 
-    G.add_edges_from([edges_list[i][0] for i in range(len(edges_list))])
+        #Find the floquet eigenstates and quasienergies
+        floquet_states,quasi_energies = floquet_modes(H,T,args,True,None)
 
-    #Specify weight for nodes and edges
-    vals = [round(np.abs(node_list[n][1]),1) for n in G.nodes()]
-    weights = [round(np.abs(edges_list[n][1]),3) for n in range(len(G.edges()))]
+        eff = floquet_states[k]
+        ent = np.zeros(shape=(N,N))
+        for i in range(N):
+            red_rho = 0
+            for j in range(i+1,N):
+                red_rho = eff.ptrace([i,j])
+                ent[i,j] = concurrence(red_rho)
 
-    #Drwa graph
-    nodes = nx.draw_networkx_nodes(G, vmin=-1., vmax=1., cmap=plt.get_cmap('YlOrRd'), node_color=vals, width = weights,pos=nx.circular_layout(G))
-    edges = nx.draw_networkx_edges(G, vmin=-1., vmax=1., cmap=plt.get_cmap('BuGn'), node_color=vals, width = weights,pos=nx.circular_layout(G))
-    plt.savefig("state_%d.png" % k)
+        #Generate graphs
+        G, nodes, edges = graphs.generate_weighted_graph(ent)
+
+        plt.savefig("entangled grap_vect%d-T0.png" % k)
